@@ -1993,6 +1993,10 @@ training_corpus = get_training_corpus()
 tokenizer = old_tokenizer.train_new_from_iterator(training_corpus, vocab_size=10000)
 
 # %%
+# Save trained tokenizer to local dir
+tokenizer.save_pretrained(save_directory='tokenizer')
+
+# %%
 # before training the tokenizer
 print(old_tokenizer('I love Shanghai!'))
 print(old_tokenizer('我爱上海！'))
@@ -2205,9 +2209,20 @@ model = create_model(
 )
 
 # %%
+# model parameters
+sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+# %%
 # Since we use one tokenier for both source and target inputs in the example,
 # we can tie source embedding and target embedding weights
 model.tie_weights()
+
+# %%
+# model parameters
+sum(p.numel() for p in model.parameters() if p.requires_grad)
+
+# Note the differences of number of trainable parameters 
+# before and after the weight tie
 
 # %%
 # Check if weights are tied
