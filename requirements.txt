@@ -1,0 +1,7 @@
+## Core python packages
+pandas==2.2.3
+datasets==3.0.1
+plotly==5.24.1
+torch==2.4.1
+transformers==4.45.2
+GPUtil==1.4.0
