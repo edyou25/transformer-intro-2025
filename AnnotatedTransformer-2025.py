@@ -2084,9 +2084,7 @@ pad_sequence(to_pad, batch_first=True, padding_value=tokenizer.pad_token_id)
 # > <br>Either `data_collator_with_padding` or `DataCollatorWithPadding` is ok.
 
 # %%
-padding_value = tokenizer.pad_token_id      # padding vaue
-
-def data_collator_with_padding(features):
+def data_collator_with_padding(features, padding_value):
     src_to_pad = []
     tgt_to_pad = []
     for row in features:
@@ -2108,19 +2106,14 @@ def data_collator_with_padding(features):
     
     return Batch(padded_batch['src'], padded_batch['tgt'], pad=padding_value)
 
-
 # %%
-from transformers import PreTrainedTokenizerBase
-
-# padding_value = tokenizer.pad_token_id      # padding vaue
-
 @dataclass
 class DataCollatorWithPadding:
     """
     Only parameter tokenizer is used in the example, 
     but other parameters may provide additional controls.
     """
-    tokenizer: PreTrainedTokenizerBase
+    padding_value: int = None      # padding 
     # padding: Union[bool, str] = True
     # pad_to_multiple_of: Optional[int] = None
     # return_tensors: str = "pt"
@@ -2136,12 +2129,12 @@ class DataCollatorWithPadding:
         padded_batch['src'] = pad_sequence(
             src_to_pad,
             batch_first=True,
-            padding_value=self.tokenizer.pad_token_id
+            padding_value=self.padding_value
         )
         padded_batch['tgt'] = pad_sequence(
             tgt_to_pad,
             batch_first=True,
-            padding_value=self.tokenizer.pad_token_id
+            padding_value=self.padding_value
         )
         
         # return padded_batch   # return simple padded batch
@@ -2149,11 +2142,11 @@ class DataCollatorWithPadding:
         # return batched sample with processed `tgt_y` and masks
         return Batch(padded_batch['src'], padded_batch['tgt'], pad=tokenizer.pad_token_id)
 
-
 # %%
-data_collator = DataCollatorWithPadding(tokenizer)
+data_collator = DataCollatorWithPadding(padding_value=tokenizer.pad_token_id)
 
-# data_collator = data_collator_with_padding
+# from functools import partial
+# data_collator = partial(data_collator_with_padding, padding_value=tokenizer.pad_token_id)
 
 # %%
 # create data loader
