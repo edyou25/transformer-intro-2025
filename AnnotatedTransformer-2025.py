@@ -645,7 +645,7 @@ class MultiHeadAttention(nn.Module):
         # 1) Do all the linear projections in batch from d_model => h x d_k
         query = self.q_proj(query).view(nbatches, -1, self.h, self.d_k).transpose(1, 2) # d_model => h x d_k：实现了 multihead attention（多头注意力机制）
         key = self.k_proj(key).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
-        value = self.k_proj(value).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
+        value = self.v_proj(value).view(nbatches, -1, self.h, self.d_k).transpose(1, 2)
         
         # 2) Apply attention on all the projected vectors in batch.
         x, self.attn = attention(
