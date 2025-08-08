@@ -2151,7 +2151,7 @@ data_collator = DataCollatorWithPadding(padding_value=tokenizer.pad_token_id)
 # %%
 # create data loader
 
-batch_size = 128
+batch_size = 32
 
 train_dataloader = DataLoader(
     train_dataset,
@@ -2288,7 +2288,7 @@ train_dataset
 # %%
 # create train dataloader
 
-batch_size = 128
+batch_size = 32
 
 train_dataloader = DataLoader(
     train_dataset,
@@ -2350,7 +2350,7 @@ train_epochs(
 # 
 
 # %%
-batch_size = 128
+batch_size = 32
 
 eval_dataloader = DataLoader(
     eval_dataset,
